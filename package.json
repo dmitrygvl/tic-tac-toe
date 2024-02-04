@@ -8,9 +8,9 @@
     "lint": "prettier --check . && eslint . && npx tsc --noEmit",
     "lint:fix": "prettier --write . && eslint . --fix && npx tsc --noEmit",
     "prepare": "husky install",
-    "start": "webpack serve --mode development",
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production"
+    "start": "nodemon --watch ./webpack.config.ts --exec webpack serve --define-process-env-node-env development",
+    "dev": "webpack --define-process-env-node-env development",
+    "build": "webpack --define-process-env-node-env production"
   },
   "keywords": [],
   "author": "",
@@ -75,5 +75,6 @@
       "prettier --write"
     ],
     "*.{css,md,yml,json,html}": "prettier . --write"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

@@ -1,6 +1,6 @@
-import 'webpack-dev-server';
 import * as webpack from 'webpack';
 import { resolve } from 'node:path';
+import 'webpack-dev-server';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
