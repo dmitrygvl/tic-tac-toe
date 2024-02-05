@@ -28,3 +28,11 @@ body {
     margin: 0 auto;
   }
 }
+
+.input-name {
+  color: black;
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 16px;
+}

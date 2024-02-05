@@ -78,15 +78,14 @@ const EndGameModal: FC<IEndGameModalProps> = ({
                     <div className="modal-content__footer">
                       <span className="modal-content__footer_note">Note: </span>
                       In a new game, the player who initialised the creation of
-                      the new game will have the right of first turn!
+                      the new game will have the right of first turn.
                     </div>
                   </>
                 )}
                 {newGame && (
                   <div className="modal-content__body">
-                    The participant has initialised the creation of a new game!
-                    We are waiting for the confirmation of the second
-                    participant!
+                    The participant has created of a new game. We are waiting
+                    for the confirmation of the second player.
                   </div>
                 )}
               </>

@@ -236,7 +236,7 @@ const App: FC = () => {
   }, [offerAndAgreement]);
 
   return (
-    <div className="_container">
+    <main className="_container">
       <Title />
       {state.showStatusSelection && (
         <StartMenu
@@ -245,6 +245,7 @@ const App: FC = () => {
         />
       )}
       {state.showInput && (
+        // <section className="input-name__container">
         <input
           data-testid="input"
           type="text"
@@ -255,6 +256,7 @@ const App: FC = () => {
           value={name}
           onChange={handleChangeInput}
         />
+        // </section>
       )}
       {state.showRoomSelection && (
         <SelectRoom
@@ -283,7 +285,7 @@ const App: FC = () => {
       {!connection.state && connection.message === 'Server went down' && (
         <ServerWentDownModal />
       )}
-    </div>
+    </main>
   );
 };
 

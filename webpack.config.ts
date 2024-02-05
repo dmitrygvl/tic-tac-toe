@@ -4,6 +4,7 @@ import 'webpack-dev-server';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 import pkg from './package.json';
 
 type Mode = 'none' | 'production' | 'development' | undefined;
@@ -59,6 +60,7 @@ const config: webpack.Configuration = {
       PREFIX: JSON.stringify(PREFIX),
     }),
     new MiniCssExtractPlugin(),
+    new FaviconsWebpackPlugin('client/src/assets/img/favicon.png'),
   ],
   optimization: {
     minimizer: [`...`, new CssMinimizerPlugin()],
