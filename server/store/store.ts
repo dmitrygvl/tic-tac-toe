@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import messagesReducer from './slices/messagesSlice.js';
+import roomsReducer from './slices/roomsSlice.js';
+import usersReducer from './slices/usersSlice.js';
 
 const store = configureStore({
   reducer: {
-    messages: messagesReducer,
+    rooms: roomsReducer,
+    users: usersReducer,
   },
 });
 

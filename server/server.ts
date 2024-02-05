@@ -1,39 +1,66 @@
 import http from 'http';
+import https from 'https';
+import fs from 'fs';
 import express from 'express';
-import WebSocket, { WebSocketServer } from 'ws';
-import store from './store/store';
-import { addMessage } from './store/slices/messagesSlice';
+import { config } from 'dotenv';
+import { WebSocketServer } from 'ws';
+import { handleEventMessage } from './handlers/message/handleEventMessage.js';
+import { handleEventClose } from './handlers/close/handleEventClose.js';
+import { handleEventOpen } from './handlers/open/handleEventOpen.js';
+
+config();
+
+const httpPort = process.env.HTTP_PORT || 80;
+const httpsPort = process.env.HTTPS_PORT || 443;
 
 const app = express();
 
-const server = http.createServer(app);
+try {
+  const privateKeyPath = process.env.SSL_KEY as string;
+  const publicKeyPath = process.env.SSL_CERT as string;
+  const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+  const certificate = fs.readFileSync(publicKeyPath, 'utf8');
+  const credentials = { key: privateKey, cert: certificate };
+  const httpsServer = https.createServer(credentials, app);
 
-const webSocketServer = new WebSocketServer({ server });
+  const webSocketServerS = new WebSocketServer({ server: httpsServer });
 
-const dispatchEvent = (message: WebSocket.Data) => {
-  if (typeof message !== 'string') {
-    return;
-  }
+  webSocketServerS.on('connection', (ws) => {
+    handleEventOpen(ws);
+    ws.on('message', (m, isBinary) => {
+      const message = isBinary ? m : m.toString();
+      handleEventMessage(message, ws);
+    });
+    ws.on('close', () => {
+      handleEventClose(ws);
+    });
+  });
 
-  store.dispatch(addMessage(message));
+  httpsServer.listen(httpsPort, () => {
+    // eslint-disable-next-line no-console
+    console.log(`HTTPS Server listening on port ${httpsPort}`);
+  });
+} catch (ex) {
+  // eslint-disable-next-line no-console
+  console.error('Certificates not found. Not using HTTPS', ex);
+}
 
-  webSocketServer.clients.forEach((client) =>
-    client.send(JSON.stringify(store.getState().messages)),
-  );
-};
+const httpServer = http.createServer(app);
+
+const webSocketServer = new WebSocketServer({ server: httpServer });
 
 webSocketServer.on('connection', (ws) => {
-  ws.on('error', (err) => {
-    // eslint-disable-next-line no-console
-    console.error(err);
+  handleEventOpen(ws);
+  ws.on('message', (m, isBinary) => {
+    const message = isBinary ? m : m.toString();
+    handleEventMessage(message, ws);
   });
-  ws.on('message', (msg, isBinary) => {
-    const message = isBinary ? msg : msg.toString();
-    dispatchEvent(message);
+  ws.on('close', () => {
+    handleEventClose(ws);
   });
 });
 
-server.listen(3001, () => {
+httpServer.listen(httpPort, () => {
   // eslint-disable-next-line no-console
-  console.log(`Server started at http://localhost:3001`);
+  console.log(`HTTP Server listening on port ${httpPort}`);
 });
