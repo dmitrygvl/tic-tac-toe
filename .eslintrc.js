@@ -44,11 +44,13 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
-    'eslint:recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
+    'plugin:jest/recommended',
     'plugin:@typescript-eslint/recommended',
+    // 'plugin:import/recommended',
+    // 'plugin:import/typescript',
     'plugin:prettier/recommended',
+    'plugin:react/jsx-runtime',
+    'prettier',
   ],
   overrides: [
     {
@@ -89,6 +91,8 @@ module.exports = {
     ],
     'import/extensions': ['warn', { css: 'never', ts: 'never', tsx: 'never' }],
     'import/prefer-default-export': 'off',
+    'no-nested-ternary': 'off',
+    'no-await-in-loop': 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {
@@ -99,8 +103,8 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'no-param-reassign': 'off',
-    'no-useless-concat': 'off',
-    'no-eval': 'off',
+    // 'no-useless-concat': 'off',
+    // 'no-eval': 'off',
     'no-promise-executor-return': 'off',
     'no-use-before-define': 'off',
     'no-restricted-syntax': 'off',

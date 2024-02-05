@@ -1,45 +1,94 @@
-import React, { FC, FormEvent, useEffect, useState } from 'react';
-import Form from './components/Form';
-import Messages from './components/Messages';
+import React, { FC, useEffect, useState } from 'react';
+import { UseSelector } from 'react-redux';
+import Title from './components/Title/Title';
+import StartMenu from './components/StartMenu/StartMenu';
+import StartGameForm from './components/StartGameForm/StartGameForm';
+import './App.css';
 
 const url = `ws://localhost:3001`;
 export const socket = new WebSocket(url);
 
 const App: FC = () => {
-  const [messages, setMessages] = useState([]);
+  const [rounds, setRounds] = useState([]);
   const [connectionOpen, setConnectionOpen] = useState(true);
+  const [showFormStart, setShowFormStart] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleClickPlayer = () => {
+    if (!connectionOpen) {
+      return;
+    }
+
+    setShowFormStart(true);
+  };
+
+  const handleClickObserver = () => {
+    if (!connectionOpen) {
+      return;
+    }
+
+    socket.send('getRounds');
+  };
+
+  const handleSubmitFormStart = (ev: React.SyntheticEvent) => {
+    ev.preventDefault();
 
     if (!connectionOpen) {
       return;
     }
 
-    const target = e.target as HTMLFormElement;
-    // eslint-disable-next-line no-console
-    console.log((target.message as HTMLInputElement).value);
-    socket.send((target.message as HTMLInputElement).value);
+    const target = ev.target as typeof ev.target & {
+      name: { value: string };
+    };
+
+    socket.send(JSON.stringify({ status: 'player', name: target.name.value }));
+  };
+
+  const handleClickRound = (id: string) => {
+    if (!connectionOpen) {
+      return;
+    }
+
+    socket.send(JSON.stringify({ status: 'observer', roundId: id }));
+
+    setRounds([]);
+  };
+
+  const handleSocketEventMessage = (event: MessageEvent) => {
+    console.log(event.data);
+
+    const data = JSON.parse(event.data);
+
+    if ('rounds' in data) {
+      setRounds(data.rounds);
+    }
+  };
+
+  const handleSocketEventClose = (event: CloseEvent) => {
+    console.log(`Closed ${event.code}`);
+    setConnectionOpen(false);
   };
 
   useEffect(() => {
-    socket.addEventListener('message', (event) => {
-      // eslint-disable-next-line no-console
-      console.log(event.data);
-      setMessages(JSON.parse(event.data));
-    });
+    socket.addEventListener('message', handleSocketEventMessage);
 
-    socket.onclose = (event) => {
-      // eslint-disable-next-line no-console
-      console.log(`Closed ${event.code}`);
-      setConnectionOpen(false);
+    socket.addEventListener('close', handleSocketEventClose);
+
+    return () => {
+      socket.removeEventListener('message', handleSocketEventMessage);
+
+      socket.removeEventListener('close', handleSocketEventClose);
     };
   }, []);
 
   return (
     <>
-      <Form onSubmit={handleSubmit} />
-      <Messages messages={messages} />
+      <Title />
+      <StartMenu
+        onClickPlayer={handleClickPlayer}
+        onClickObserver={handleClickObserver}
+      />
+      {showFormStart && <StartGameForm onSubmit={handleSubmitFormStart} />}
+      <Rounds rounds={rounds} onClickRound={handleClickRound} />
     </>
   );
 };
