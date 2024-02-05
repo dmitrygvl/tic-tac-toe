@@ -12,9 +12,9 @@ const ServerWentDownModal: FC = () => (
     >
       <div className="modal__dialog modal-dialog">
         <div className="modal-dialog__content modal-content">
-          <div className="modal-content__header">The server went down!</div>
+          <div className="modal-content__header">The server went down</div>
           <div className="modal-content__body">
-            We will definitely solve the problem! Try connecting later!
+            Please, try to connect later.
           </div>
         </div>
       </div>
