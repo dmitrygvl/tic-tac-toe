@@ -80,3 +80,5 @@ storybook-static
 stories
 build
 /client/dist
+/server/dist
+.vercel

@@ -4,6 +4,7 @@ import fs from 'fs';
 import express from 'express';
 import { config } from 'dotenv';
 import { WebSocketServer } from 'ws';
+import path from 'node:path';
 import { handleEventMessage } from './handlers/message/handleEventMessage.js';
 import { handleEventClose } from './handlers/close/handleEventClose.js';
 import { handleEventOpen } from './handlers/open/handleEventOpen.js';
@@ -46,6 +47,13 @@ try {
 }
 
 const httpServer = http.createServer(app);
+
+const staticPath = `${process.cwd()}/client/dist`;
+
+app.use('/', express.static(staticPath));
+
+// eslint-disable-next-line no-console
+console.log({ staticPath });
 
 const webSocketServer = new WebSocketServer({ server: httpServer });
 

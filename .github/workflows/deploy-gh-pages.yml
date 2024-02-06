@@ -22,7 +22,7 @@ jobs:
 
       - name: Build  🔧
         run: |
-          npm run build
+          npm run build:prod
 
       - name: Deploy 🚀
         # https://github.com/marketplace/actions/deploy-to-github-pages
