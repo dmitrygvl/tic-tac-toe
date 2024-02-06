@@ -245,7 +245,6 @@ const App: FC = () => {
         />
       )}
       {state.showInput && (
-        // <section className="input-name__container">
         <input
           data-testid="input"
           type="text"
@@ -256,7 +255,6 @@ const App: FC = () => {
           value={name}
           onChange={handleChangeInput}
         />
-        // </section>
       )}
       {state.showRoomSelection && (
         <SelectRoom
