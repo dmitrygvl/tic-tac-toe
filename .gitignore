@@ -74,6 +74,7 @@ dist
 
 
 .vscode
+.versel
 
 storybook-static
 stories
