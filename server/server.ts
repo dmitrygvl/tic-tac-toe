@@ -52,7 +52,6 @@ const staticPath = `${process.cwd()}/client/dist`;
 
 app.use('/', express.static(staticPath));
 
-// eslint-disable-next-line no-console
 console.log({ staticPath });
 
 const webSocketServer = new WebSocketServer({ server: httpServer });

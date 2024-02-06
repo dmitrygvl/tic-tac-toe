@@ -8,8 +8,6 @@ module.exports = {
     'airbnb-base',
     'plugin:jest/recommended',
     'plugin:@typescript-eslint/recommended',
-    // 'plugin:import/recommended',
-    // 'plugin:import/typescript',
     'plugin:prettier/recommended',
     'plugin:react/jsx-runtime',
     'prettier',

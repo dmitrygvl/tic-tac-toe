@@ -11,8 +11,9 @@
     "start": "nodemon --watch ./webpack.config.ts --exec webpack serve --define-process-env-node-env development",
     "dev": "webpack --define-process-env-node-env development",
     "build": "webpack --define-process-env-node-env production",
-    "build:prod": "npm run build && cd ./server && npm run build",
-    "start:prod": "node ./server/dist/server.js"
+    "build-prod": "npm run build && cd ./server && npm run build",
+    "start-prod": "node ./server/dist/server.js",
+    "vercel-build": "npm run build-prod"
   },
   "keywords": [],
   "author": "",
