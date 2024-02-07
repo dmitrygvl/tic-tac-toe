@@ -67,7 +67,7 @@ const config: webpack.Configuration = {
   },
   devServer: {
     compress: true,
-    port: 9000,
+    port: 3000,
     watchFiles: ['./client/index.html'],
     historyApiFallback: true,
   },
